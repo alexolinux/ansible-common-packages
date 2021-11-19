@@ -1,0 +1,48 @@
+---
+#tasks file for common-packages
+
+- name: add hosts file
+  template:
+    src: hosts.conf
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+  tags: [ add_hosts ]
+
+- name: set hostname
+  hostname:
+    name: "{{ host_alias }}"
+  
+  tags: [ set_hostname ]
+
+- name: Install epel-release on Amazon Linux 2
+  command: "{{ epel_install }}"
+  become: true
+  become_user: "{{ user }}"
+
+  tags: [ install_epel ]
+
+- name: Enable epel-release on Amazon Linux 2
+  become: true
+  become_user: "{{ user }}"
+  command: "{{ epel_enable }}"
+  
+  tags: [ enable_epel ]
+
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+  tags: [ update_packages ]
+
+- name: Install common packages from sysadmin list
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+  tags: [ install_packages ]

@@ -1,0 +1,12 @@
+---
+# vars file for common-packages
+packages:
+  - nmap
+  - tcpdump
+  - git
+  - whois
+  - bind-utils
+
+user: root
+epel_install: amazon-linux-extras install epel -y
+epel_enable: yum-config-manager --enable epel
