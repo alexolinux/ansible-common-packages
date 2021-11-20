@@ -1,12 +1,16 @@
 ansible-common-packages
 =========
 
-Role for Amazon Linux 2 AMI - Package Installation and a few additional things.
+This Role provides follow resources:
+
+- Custom /etc/hosts deployment.
+- Enable/Install EPEL Repository.
+- Installing list of packages from a list. 
 
 Requirements
 ------------
 
-Node servers must be AMI Amazon Linux 2.
+For now this role provides package automations for RHEL only (Including Amazon Linux 2).
 
 Role Variables
 --------------
