@@ -18,24 +18,45 @@
   
   tags: [ set_hostname ]
 
-- name: Install epel-release on Amazon Linux 2
-  command: "{{ epel_install }}"
+- name: Install EPEL Repository on Amazon Linux 2  
   become: true
   become_user: "{{ user }}"
+  command: "{{ epel_install }}"
+  when: ansible_distribution == 'Amazon'
 
-  tags: [ install_epel ]
+  tags: [ install_epel_amazon ]
 
-- name: Enable epel-release on Amazon Linux 2
+- name: Enable EPEL Repository on Amazon Linux 2
   become: true
   become_user: "{{ user }}"
   command: "{{ epel_enable }}"
+  when: ansible_distribution == 'Amazon'
   
-  tags: [ enable_epel ]
+  tags: [ enable_epel_amazon ]
+
+- name: Enable EPEL Repository on CentOS 7
+  become: true
+  yum:
+    name: epel-release
+    state: latest
+  when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '7'
+
+  tags: [ enable_epel_rhel8]
+
+- name: Enable EPEL Repository on CentOS 8
+  become: true
+  dnf:
+    name: epel-release
+    state: latest
+  when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8'
+
+  tags: [ enable_epel_rhel8]
 
 - name: Upgrade all packages
   yum:
     name: '*'
     state: latest
+  when: ansible_os_family == "RedHat"
 
   tags: [ update_packages ]
 
@@ -44,5 +65,6 @@
     name: "{{ item }}"
     state: present
   loop: "{{ packages }}"
+  when: ansible_os_family == "RedHat"
 
   tags: [ install_packages ]
