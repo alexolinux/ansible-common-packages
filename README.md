@@ -39,7 +39,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-BSD
+GPL-3.0 license
 
 Author Information
 ------------------
